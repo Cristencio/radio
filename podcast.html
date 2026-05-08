@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Rádio Digital — Podcasts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
+    <style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+        }
+        body {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        .podcast-icon {
+            color: #75FB4C;
+            font-variation-settings: 'FILL' 1;
+        }
+        /* links e botões com hover suave */
+        a, button {
+            transition: opacity 0.2s;
+        }
+        a:hover, button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-body-md antialiased flex flex-col min-h-screen">
+    <!-- Header minimalista com ícone e título -->
+    <header class="w-full flex-shrink-0 border-b border-gray-800">
+        <div class="flex justify-between items-center px-6 py-4 max-w-2xl mx-auto">
+            <a href="reproduzir.html" class="text-gray-400 hover:text-white transition flex items-center gap-2">
+                <span class="material-symbols-outlined">arrow_back</span>
+                <span class="text-sm">Voltar</span>
+            </a>
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined podcast-icon">podcasts</span>
+                <h1 class="font-newsreader text-xl font-semibold tracking-tight text-white">Podcasts</h1>
+            </div>
+            <div class="w-12"></div> <!-- espaçador -->
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-2xl mx-auto px-6 py-10 w-full">
+        <!-- Conteúdo principal - Lista de episódios simulada -->
+        <div class="mb-8">
+            <p class="text-gray-300 text-center">Explore os nossos programas exclusivos</p>
+        </div>
+
+        <div class="space-y-6">
+            <!-- Card de podcast 1 -->
+            <div class="bg-gray-900 rounded-2xl p-5 border border-gray-800 hover:border-gray-700 transition">
+                <div class="flex items-start gap-4">
+                    <div class="bg-gray-800 rounded-full w-14 h-14 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined podcast-icon text-3xl">mic</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-lg text-white">Conversas na Rádio</h3>
+                        <p class="text-gray-400 text-sm mt-1">Entrevistas e debates sobre actualidade moçambicana.</p>
+                        <div class="flex items-center gap-3 mt-3">
+                            <span class="text-xs text-gray-500">Episódio 12 • 45 min</span>
+                            <button class="bg-primary-container/20 hover:bg-primary-container/40 text-white px-4 py-1.5 rounded-full text-sm font-medium transition flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[18px]">play_arrow</span> Ouvir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card de podcast 2 -->
+            <div class="bg-gray-900 rounded-2xl p-5 border border-gray-800 hover:border-gray-700 transition">
+                <div class="flex items-start gap-4">
+                    <div class="bg-gray-800 rounded-full w-14 h-14 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined podcast-icon text-3xl">headphones</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-lg text-white">Música & História</h3>
+                        <p class="text-gray-400 text-sm mt-1">A trilha sonora da nossa cultura, episódio especial.</p>
+                        <div class="flex items-center gap-3 mt-3">
+                            <span class="text-xs text-gray-500">Episódio 8 • 38 min</span>
+                            <button class="bg-primary-container/20 hover:bg-primary-container/40 text-white px-4 py-1.5 rounded-full text-sm font-medium transition flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[18px]">play_arrow</span> Ouvir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card de podcast 3 -->
+            <div class="bg-gray-900 rounded-2xl p-5 border border-gray-800 hover:border-gray-700 transition">
+                <div class="flex items-start gap-4">
+                    <div class="bg-gray-800 rounded-full w-14 h-14 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined podcast-icon text-3xl">news</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-lg text-white">Notícias da Manhã</h3>
+                        <p class="text-gray-400 text-sm mt-1">Resumo diário com os principais acontecimentos.</p>
+                        <div class="flex items-center gap-3 mt-3">
+                            <span class="text-xs text-gray-500">Episódio 245 • 22 min</span>
+                            <button class="bg-primary-container/20 hover:bg-primary-container/40 text-white px-4 py-1.5 rounded-full text-sm font-medium transition flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[18px]">play_arrow</span> Ouvir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensagem de rodapé -->
+        <div class="mt-12 text-center text-gray-500 text-xs">
+            <span class="material-symbols-outlined podcast-icon text-[16px] align-middle">podcasts</span> Novos episódios todas as semanas
+        </div>
+    </main>
+
+    <!-- Botão de navegação inferior simples (opcional) -->
+    <nav class="bg-gray-950/90 backdrop-blur-md flex-shrink-0 border-t border-gray-800 mt-6">
+        <div class="flex justify-around items-center px-6 py-3 max-w-2xl mx-auto">
+            <a href="reproduzir.html" class="flex flex-col items-center text-gray-400 gap-0.5 transition-colors hover:text-white">
+                <span class="material-symbols-outlined">play_circle</span>
+                <span class="text-[10px] font-medium">Reprodutor</span>
+            </a>
+            <a href="Estacoes.html" class="flex flex-col items-center text-gray-400 gap-0.5 hover:text-white">
+                <span class="material-symbols-outlined">radio</span>
+                <span class="text-[10px] font-medium">Estações</span>
+            </a>
+            <a href="#" class="flex flex-col items-center text-gray-400 gap-0.5 hover:text-white">
+                <span class="material-symbols-outlined">favorite</span>
+                <span class="text-[10px] font-medium">Biblioteca</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Pequeno script para simular ação de "Ouvir" (apenas alerta demonstrativo)
+        const botoes = document.querySelectorAll('button');
+        botoes.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if (btn.textContent.includes('Ouvir') || btn.innerText.includes('Ouvir')) {
+                    alert('Demo: reprodução de podcast em breve. Obrigado!');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

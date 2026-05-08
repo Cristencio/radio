@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="light" lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Rádio Digital — Estações e Reprodutor</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
+    <style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        * { box-sizing: border-box; }
+        body { overflow: auto; background: #fbf9f9; transition: background-color 0.2s, color 0.2s; }
+        @media (max-height: 700px) {
+            .responsive-img { width: 130px !important; height: 130px !important; }
+            .title-size { font-size: 1.4rem !important; }
+        }
+        .podcast-btn {
+            background-color: #000000;
+            color: white;
+            border-radius: 9999px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+        .podcast-btn:hover { opacity: 0.8; }
+        .podcast-icon-green { color: #75FB4C; font-variation-settings: 'FILL' 1; }
+
+        /* DARK MODE */
+        .dark body { background: #0a0a0c; }
+        .dark .bg-surface { background-color: #121214 !important; }
+        .dark .bg-surface-container-lowest { background-color: #18181b !important; }
+        .dark .bg-surface-container-low { background-color: #1f1f24 !important; }
+        .dark .bg-surface-container-high { background-color: #2a2a2f !important; }
+        .dark .text-on-surface { color: #ededf0 !important; }
+        .dark .text-secondary { color: #a1a1aa !important; }
+        .dark .border-outline-variant { border-color: #2c2c32 !important; }
+        .dark .bg-stone-50, .dark .bg-stone-50\/90, .dark .bg-stone-50\/95 { background-color: #131316 !important; }
+        .dark .border-stone-100, .dark .border-stone-200 { border-color: #252529 !important; }
+        .dark .text-stone-900 { color: #f4f4f6 !important; }
+        .dark .text-stone-400, .dark .text-stone-500 { color: #9ca3af !important; }
+        .dark .bg-primary-container\/20 { background-color: rgba(248, 163, 163, 0.2) !important; }
+        .dark .bg-primary-container { background-color: #c76b6c !important; }
+        .dark .text-primary-container { color: #fdb4b4 !important; }
+        .dark .border-primary-container { border-color: #c76b6c !important; }
+        .dark .border-primary-container\/50 { border-color: rgba(199, 107, 108, 0.5) !important; }
+        .dark .bg-on-surface { background-color: #f4f4f6 !important; }
+        .dark .text-surface { color: #121214 !important; }
+        .dark .bg-primary { background-color: #c76b6c !important; }
+        .dark .bg-primary\/90 { background-color: rgba(199, 107, 108, 0.9) !important; }
+        .dark .accent-primary-container { accent-color: #c76b6c; }
+        .dark .bg-surface-variant { background-color: #25252b !important; }
+        .dark .text-on-surface-variant { color: #c5c5d0 !important; }
+        
+        .status-led.online { background-color: #22c55e; box-shadow: 0 0 4px #22c55e; }
+        .status-led.offline { background-color: #ef4444; box-shadow: 0 0 4px #ef4444; }
+        .status-led.checking { background-color: #eab308; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        
+        @keyframes playingPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(248, 163, 163, 0.7); }
+            70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(248, 163, 163, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(248, 163, 163, 0); }
+        }
+        .play-pulse { animation: playingPulse 1.2s infinite ease-in-out; }
+        
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .station-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .station-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .station-desc {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .check-btn { background: none; border: none; cursor: pointer; padding: 2px; border-radius: 20px; }
+        .check-btn:hover { background: rgba(0,0,0,0.05); }
+        .dark .check-btn:hover { background: rgba(255,255,255,0.1); }
+        
+        .now-playing-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+        .wave-animation { display: inline-flex; gap: 2px; align-items: center; }
+        .wave-animation span {
+            width: 3px;
+            height: 10px;
+            background-color: #22c55e;
+            display: inline-block;
+            border-radius: 2px;
+            animation: wave 0.8s infinite ease alternate;
+        }
+        .wave-animation span:nth-child(2) { animation-delay: 0.2s; height: 14px; }
+        .wave-animation span:nth-child(3) { animation-delay: 0.4s; height: 8px; }
+        @keyframes wave {
+            0% { transform: scaleY(0.4); }
+            100% { transform: scaleY(1); }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: { extend: { colors: { "primary": "#8e4b4c", "primary-container": "#f8a3a3", "surface": "#fbf9f9", "on-surface": "#1b1c1c", "secondary": "#5f5e5e", "surface-container-low": "#f5f3f3", "surface-container-high": "#e9e8e7", "surface-variant": "#e4e2e2", "outline-variant": "#d8c1c0", "surface-container-lowest": "#ffffff" }, fontFamily: { display: ["Newsreader", "serif"], "body-md": ["Manrope", "sans-serif"] }, fontSize: { "headline-lg": ["28px", { lineHeight: "1.3", fontWeight: "600" }] } } }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased h-screen flex flex-col overflow-hidden">
+
+    <header class="bg-stone-50/90 backdrop-blur-sm w-full flex-shrink-0 z-20 border-b border-stone-100 dark:border-stone-200/20">
+        <div class="flex justify-between items-center px-4 py-3 max-w-2xl mx-auto">
+            <a href="podcast.html" class="podcast-btn">
+                <span class="material-symbols-outlined podcast-icon-green">podcasts</span>
+                <span>Podcast</span>
+            </a>
+            <h1 class="font-newsreader text-2xl font-semibold text-stone-900 dark:text-stone-100 tracking-tight text-center flex-1">Rádio Digital</h1>
+            <button id="headerThemeBtn" class="text-stone-600 hover:text-primary transition dark:text-stone-300" title="Alternar tema">
+                <span id="headerThemeIcon" class="material-symbols-outlined">light_mode</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 🔧 Adicionado id="stationsScrollContainer" para preservar scroll -->
+    <main id="stationsScrollContainer" class="flex-1 overflow-y-auto relative">
+        <div id="stationsView" class="w-full h-full transition-all duration-200">
+            <div class="max-w-7xl mx-auto px-4 py-5 pb-28">
+                <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                    <div class="relative flex-1">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"><span class="material-symbols-outlined text-[20px]">search</span></span>
+                        <input type="text" id="searchInput" placeholder="Pesquisar nome ou descrição..." class="w-full pl-11 pr-4 py-2.5 rounded-full border border-outline-variant bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent text-sm dark:bg-surface-container-lowest dark:text-on-surface">
+                    </div>
+                    <select id="categoriaSelect" class="pl-4 pr-8 py-2.5 rounded-full border border-outline-variant bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary-container text-sm appearance-none dark:bg-surface-container-lowest dark:text-on-surface">
+                        <option value="todas">Todas as categorias</option>
+                        <option value="Notícias">Notícias</option>
+                        <option value="Músicas">Músicas</option>
+                        <option value="Debates">Debates</option>
+                        <option value="Comunitária">Comunitária</option>
+                    </select>
+                </div>
+                
+                <!-- 🔧 Corrigido: grid-cols-0 para grid-cols-1 -->
+                <div id="stationsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 auto-rows-fr"></div>
+                <div id="noResultsMsg" class="text-center text-secondary py-12 hidden">Nenhuma estação encontrada. Tente outros filtros.</div>
+            </div>
+        </div>
+
+        <div id="playerView" class="w-full h-full hidden transition-all duration-200">
+            <div class="flex flex-col justify-center items-center px-4 py-2 max-w-lg mx-auto h-full min-h-[500px]">
+                <div class="flex flex-col items-center w-full gap-3">
+                    <div class="relative flex-shrink-0">
+                        <div class="absolute inset-0 rounded-full border-[5px] border-primary-container/30 shadow-md"></div>
+                        <img id="stationImg" class="responsive-img w-44 h-44 sm:w-56 sm:h-56 object-cover rounded-full shadow-sm" src="https://placehold.co/400/8e4b4c/white?text=RADIO" alt="estação">
+                    </div>
+                    <div class="text-center">
+                        <span class="text-secondary text-xs uppercase tracking-widest">A OUVIR</span>
+                        <h2 id="stationName" class="font-headline-lg title-size text-2xl font-semibold">Rádio Moçambique</h2>
+                        <p id="stationFreq" class="text-secondary text-sm">Maputo · Notícias</p>
+                        <div class="flex justify-center items-center gap-2 mt-2">
+                            <div class="flex items-center gap-2 px-4 py-1.5 bg-surface-container-low rounded-full border border-surface-variant dark:bg-surface-container-low">
+                                <span id="playerStatusLed" class="w-2 h-2 rounded-full bg-gray-400"></span>
+                                <span id="playerStatusText" class="text-xs uppercase tracking-wider">DESCONHECIDO</span>
+                            </div>
+                            <button id="playerCheckStatusBtn" class="check-btn p-1" title="Verificar stream">
+                                <span class="material-symbols-outlined text-[18px] text-secondary">sync</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-full mt-2 px-2">
+                        <div class="w-full h-[6px] bg-surface-container-high rounded-full relative dark:bg-surface-container-high">
+                            <div id="progressBarFill" class="absolute left-0 top-0 h-full w-0 bg-primary-container rounded-full transition-all duration-100 ease-linear"></div>
+                        </div>
+                        <div class="flex justify-between mt-1 text-secondary text-[11px]">
+                            <span id="listenTime">00:00</span>
+                            <span class="font-semibold text-primary-container">AO VIVO</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-center items-center gap-2 mt-1 w-full max-w-[200px]">
+                        <span class="material-symbols-outlined text-secondary text-[20px]">volume_up</span>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="70" class="flex-1 accent-primary-container dark:accent-primary-container">
+                    </div>
+                    <div class="flex items-center justify-center gap-6 sm:gap-8 w-full mt-2">
+                        <button id="prevBtn" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-primary-container/50 flex items-center justify-center hover:bg-surface-container-low transition"><span class="material-symbols-outlined">skip_previous</span></button>
+                        <button id="playPauseBtn" class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-[4px] border-primary-container bg-on-surface text-surface flex items-center justify-center hover:scale-105 transition-transform shadow-md">
+                            <span id="playPauseIcon" class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                            <span id="bufferSpinner" class="absolute inset-0 flex items-center justify-center hidden">
+                                <div class="spinner"></div>
+                            </span>
+                        </button>
+                        <button id="nextBtn" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-primary-container/50 flex items-center justify-center hover:bg-surface-container-low transition"><span class="material-symbols-outlined">skip_next</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bg-stone-50/95 backdrop-blur-md flex-shrink-0 border-t border-stone-200 z-30 dark:bg-stone-50/95 dark:border-stone-200/20">
+        <div class="flex justify-around items-center px-6 pb-6 pt-2 max-w-2xl mx-auto">
+            <button id="navStationsBtn" class="flex flex-col items-center text-stone-400 gap-0.5 transition-colors">
+                <span class="material-symbols-outlined">radio</span>
+                <span class="text-[10px] font-medium">Estações</span>
+            </button>
+            <button id="navPlayerBtn" class="flex flex-col items-center text-stone-400 gap-0.5 transition-colors">
+                <span class="material-symbols-outlined">play_circle</span>
+                <span class="text-[10px] font-medium">Reprodutor</span>
+            </button>
+            <button id="navLibraryBtn" class="flex flex-col items-center text-stone-400 gap-0.5 transition-colors">
+                <span class="material-symbols-outlined">favorite</span>
+                <span class="text-[10px] font-medium">Biblioteca</span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Scripts: config.js primeiro, depois dados, depois main -->
+    <script src="script/config.js"></script>
+    <script src="estacoes/estacoesData.js"></script>
+    <script src="script/main.js"></script>
+</body>
+</html>
